@@ -3,10 +3,28 @@ name: Code collector
 on:
   push:
     branches:
-      -
-
+      - vetka
 
   pull_request:
-
+    branches:
+      - vetka
 
 jobs:
+  collect_code_project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone repo
+        uses: actions/checkout@v2
+
+      - name: Set version Python
+        uses: actions/setup-python
+        with:
+          python-version: '3.9.6'
+
+      - name: Install dependencies
+        run: |
+          pip install flake8
+
+      - name: Run linter
+        run: |
+          flake8 .
